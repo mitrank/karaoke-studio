@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --canvas-bg: #07080a;
+  --chassis-bg: #0d0f14;
+  --panel-bg: #13171f;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-highlight: rgba(255, 255, 255, 0.14);
+}
+
+body {
+  color: #f1f3f7;
+  background-color: var(--canvas-bg);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI", Roboto, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Hide scrollbars for cinematic stage presentation */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Studio Precision Hardware Sliders */
+input[type="range"] {
+  -webkit-appearance: none;
+  background: rgba(255, 255, 255, 0.07);
+  height: 5px;
+  border-radius: 9999px;
+  outline: none;
+  transition: background 0.15s ease;
+}
+
+input[type="range"]:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #13171f;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+  background: #f8fafc;
+}
+
+/* High-End Studio Hardware Glass & Chassis */
+.studio-glass {
+  background: rgba(13, 15, 20, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.85);
+}
+
+.studio-panel {
+  background: #12151d;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.studio-panel:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Rack Chassis Console Finishing */
+.rack-chassis {
+  background: linear-gradient(180deg, #161922 0%, #101218 100%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 16px 36px rgba(0, 0, 0, 0.7);
+}
+
+/* Subtle Anodized Brushed Texture */
+.rack-surface {
+  background-color: #111319;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0);
+  background-size: 8px 8px;
+}
+
+/* Physical Hardware Switch Styling */
+.switch-hardware-active {
+  background: #171b26;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* Kinetic Lyrics Active Line Lighting */
+.lyrics-active-fill {
+  background: linear-gradient(90deg, #ffffff 0%, #e2e8f0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 14px rgba(255, 255, 255, 0.3));
+}
