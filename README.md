@@ -95,6 +95,18 @@ Karaoke Studio is built strictly as a **client-side karaoke player, practice sui
 
 ---
 
+## 🚀 1-Click Deployment (Vercel)
+
+Deploy your own live instance of Karaoke Studio on Vercel with zero configuration:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmitrank%2Fkaraoke-studio)
+
+1. Click the **Deploy with Vercel** button above or visit [vercel.com/new](https://vercel.com/new).
+2. Select your GitHub repository: **`mitrank/karaoke-studio`**.
+3. Click **Deploy**. Vercel will automatically build the project and launch your live serverless URL (`https://karaoke-studio.vercel.app`) with automatic redeployment on every `git push`.
+
+---
+
 ## 📦 Getting Started
 
 ### Prerequisites
@@ -105,7 +117,7 @@ Karaoke Studio is built strictly as a **client-side karaoke player, practice sui
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/karaoke-studio.git
+   git clone https://github.com/mitrank/karaoke-studio.git
    cd karaoke-studio
    ```
 
