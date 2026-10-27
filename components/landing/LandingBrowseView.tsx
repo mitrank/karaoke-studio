@@ -17,6 +17,7 @@ import {
   Sparkles,
   Youtube,
   Disc,
+  ListPlus,
 } from 'lucide-react';
 
 interface LandingBrowseViewProps {
@@ -26,6 +27,7 @@ interface LandingBrowseViewProps {
   isPlaying: boolean;
   onTogglePlay: () => void;
   recentSongs: SongMetadata[];
+  onAddToQueue?: (song: SongMetadata) => void;
 }
 
 export const LandingBrowseView: React.FC<LandingBrowseViewProps> = ({
@@ -35,6 +37,7 @@ export const LandingBrowseView: React.FC<LandingBrowseViewProps> = ({
   isPlaying,
   onTogglePlay,
   recentSongs,
+  onAddToQueue,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [directYtLink, setDirectYtLink] = useState('');
@@ -151,6 +154,17 @@ export const LandingBrowseView: React.FC<LandingBrowseViewProps> = ({
               <span>Sing Karaoke Version</span>
               <ArrowRight className="w-4 h-4" />
             </button>
+
+            {onAddToQueue && (
+              <button
+                onClick={() => onAddToQueue(featuredSong)}
+                className="flex items-center gap-2 px-4 py-3.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/10 text-slate-200 text-xs font-semibold transition-all active:scale-95"
+                title="Add Tum Hi Ho to Up Next Queue"
+              >
+                <ListPlus className="w-4 h-4 text-indigo-400" />
+                <span>+ Add to Queue</span>
+              </button>
+            )}
 
             {currentSong && (
               <button
@@ -357,8 +371,22 @@ export const LandingBrowseView: React.FC<LandingBrowseViewProps> = ({
                 </div>
               </div>
 
-              <div className="w-9 h-9 rounded-full bg-white/5 text-slate-300 flex items-center justify-center shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-md ml-2">
-                <Play className="w-4 h-4 fill-current ml-0.5" />
+              <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                {onAddToQueue && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onAddToQueue(song);
+                    }}
+                    className="p-2 rounded-xl bg-white/5 hover:bg-indigo-600/30 text-slate-400 hover:text-indigo-200 border border-white/10 transition-all text-xs font-semibold"
+                    title="Add to Up Next Queue"
+                  >
+                    <ListPlus className="w-3.5 h-3.5" />
+                  </button>
+                )}
+                <div className="w-9 h-9 rounded-full bg-white/5 text-slate-300 flex items-center justify-center shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-all shadow-md">
+                  <Play className="w-4 h-4 fill-current ml-0.5" />
+                </div>
               </div>
             </div>
           ))}

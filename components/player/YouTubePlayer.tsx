@@ -18,20 +18,24 @@ export interface YouTubePlayerRef {
 
 interface YouTubePlayerProps {
   videoId: string;
+  songId?: string;
   isPlaying: boolean;
   currentTimeMs: number;
   onTimeUpdate: (currentTimeMs: number, durationMs: number) => void;
   onPlayStateChange: (isPlaying: boolean) => void;
+  onTrackEnded?: () => void;
   volume: number; // 0 to 1
   showVideo: boolean;
 }
 
 export const YouTubePlayer = forwardRef<YouTubePlayerRef, YouTubePlayerProps>(({
   videoId,
+  songId,
   isPlaying,
   currentTimeMs,
   onTimeUpdate,
   onPlayStateChange,
+  onTrackEnded,
   volume,
   showVideo,
 }, ref) => {
@@ -45,6 +49,13 @@ export const YouTubePlayer = forwardRef<YouTubePlayerRef, YouTubePlayerProps>(({
   const latestTimeSecRef = useRef<number>(0);
   const pendingSeekSecondsRef = useRef<number | null>(null);
   const currentVideoIdRef = useRef<string>(videoId);
+  const currentSongIdRef = useRef<string | undefined>(songId);
+  const isMutedForToggleRef = useRef<boolean>(false);
+  const onTrackEndedRef = useRef(onTrackEnded);
+
+  useEffect(() => {
+    onTrackEndedRef.current = onTrackEnded;
+  }, [onTrackEnded]);
 
   // Expose imperative player actions to parent
   useImperativeHandle(ref, () => ({
@@ -138,12 +149,27 @@ export const YouTubePlayer = forwardRef<YouTubePlayerRef, YouTubePlayerProps>(({
               event.target.seekTo(target, true);
               pendingSeekSecondsRef.current = null;
             }
+            // Safely restore volume after seamless track transition
+            if (isMutedForToggleRef.current) {
+              isMutedForToggleRef.current = false;
+              setTimeout(() => {
+                try {
+                  event.target.unMute();
+                  event.target.setVolume(Math.round(volume * 100));
+                } catch (_) {}
+              }, 80);
+            }
           } else if (state === window.YT.PlayerState.BUFFERING) {
             if (pendingSeekSecondsRef.current !== null) {
               event.target.seekTo(pendingSeekSecondsRef.current, true);
             }
-          } else if (state === window.YT.PlayerState.PAUSED || state === window.YT.PlayerState.ENDED) {
+          } else if (state === window.YT.PlayerState.PAUSED) {
             onPlayStateChange(false);
+          } else if (state === window.YT.PlayerState.ENDED) {
+            onPlayStateChange(false);
+            if (onTrackEndedRef.current) {
+              onTrackEndedRef.current();
+            }
           }
         },
         onError: (e: any) => {
@@ -164,34 +190,69 @@ export const YouTubePlayer = forwardRef<YouTubePlayerRef, YouTubePlayerProps>(({
     };
   }, [isApiReady]); // NOTE: NEVER include videoId here, to prevent recreating the player!
 
-  // 3. Handle SEAMLESS track switching when videoId changes
+  // 3. Handle track switching (New Song vs Seamless Toggle)
   useEffect(() => {
     if (!isPlayerReady || !playerRef.current) return;
-    if (currentVideoIdRef.current === videoId) return;
+    if (currentVideoIdRef.current === videoId && currentSongIdRef.current === songId) return;
 
+    const isDifferentSong = currentSongIdRef.current !== songId;
+    currentSongIdRef.current = songId;
     currentVideoIdRef.current = videoId;
-    // Capture exact current second before switching
-    const currentSec = latestTimeSecRef.current > 0 
-      ? latestTimeSecRef.current 
-      : (currentTimeMs > 0 ? currentTimeMs / 1000 : 0);
 
-    pendingSeekSecondsRef.current = currentSec;
+    if (isDifferentSong) {
+      // CASE A: NEW SONG (from queue, search, or library) -> Always start at 0:00
+      latestTimeSecRef.current = 0;
+      pendingSeekSecondsRef.current = 0;
+      isMutedForToggleRef.current = false;
 
-    try {
-      if (typeof playerRef.current.loadVideoById === 'function') {
-        playerRef.current.loadVideoById({
-          videoId: videoId,
-          startSeconds: currentSec,
-        });
-        playerRef.current.seekTo(currentSec, true);
-        if (isPlaying) {
-          playerRef.current.playVideo();
+      try {
+        if (typeof playerRef.current.unMute === 'function') {
+          playerRef.current.unMute();
+          playerRef.current.setVolume(Math.round(volume * 100));
         }
+        if (typeof playerRef.current.loadVideoById === 'function') {
+          playerRef.current.loadVideoById({
+            videoId: videoId,
+            startSeconds: 0,
+          });
+          playerRef.current.seekTo(0, true);
+          if (isPlaying) {
+            playerRef.current.playVideo();
+          }
+        }
+      } catch (err) {
+        console.warn('Error loading new track:', err);
       }
-    } catch (err) {
-      console.warn('Error seamlessly switching video:', err);
+    } else {
+      // CASE B: SAME SONG TOGGLE (Karaoke <-> Original) -> Seamless position with zero pop/spark
+      const currentSec = latestTimeSecRef.current > 0 
+        ? latestTimeSecRef.current 
+        : (currentTimeMs > 0 ? currentTimeMs / 1000 : 0);
+
+      pendingSeekSecondsRef.current = currentSec;
+      isMutedForToggleRef.current = true;
+
+      try {
+        // MUTE IMMEDIATELY before switching to eliminate loud burst / spark sound
+        if (typeof playerRef.current.mute === 'function') {
+          playerRef.current.mute();
+        }
+
+        if (typeof playerRef.current.loadVideoById === 'function') {
+          playerRef.current.loadVideoById({
+            videoId: videoId,
+            startSeconds: currentSec,
+          });
+          playerRef.current.seekTo(currentSec, true);
+          if (isPlaying) {
+            playerRef.current.playVideo();
+          }
+        }
+      } catch (err) {
+        console.warn('Error seamlessly switching track mode:', err);
+      }
     }
-  }, [videoId, isPlayerReady]);
+  }, [videoId, songId, isPlayerReady]);
 
   // 4. Sync play/pause prop with YouTube Player
   useEffect(() => {

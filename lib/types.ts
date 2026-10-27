@@ -21,6 +21,7 @@ export interface SongMetadata {
   lyrics?: LyricLine[];
   plainLyrics?: string;
   sourceType: 'youtube' | 'local' | 'stream';
+  localAudioUrl?: string; // Client-side Blob URL for user-uploaded MP3/WAV/FLAC
   defaultSyncOffsetMs?: number; // Pre-calibrated offset for this specific video
   musicalKey?: string;
   bpm?: number;

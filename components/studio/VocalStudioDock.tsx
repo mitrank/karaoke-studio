@@ -25,6 +25,8 @@ interface VocalStudioDockProps {
   pitchMonitorActive: boolean;
   onTogglePitchMonitor: (active: boolean) => void;
   onOpenAudioDevices: () => void;
+  keyShift?: number;
+  onKeyShiftChange?: (shift: number) => void;
 }
 
 export const VocalStudioDock: React.FC<VocalStudioDockProps> = ({
@@ -33,12 +35,23 @@ export const VocalStudioDock: React.FC<VocalStudioDockProps> = ({
   pitchMonitorActive,
   onTogglePitchMonitor,
   onOpenAudioDevices,
+  keyShift: externalKeyShift,
+  onKeyShiftChange,
 }) => {
   const [isMicOn, setIsMicOn] = useState(false);
   const [micVolume, setMicVolume] = useState(1.0);
   const [reverbAmount, setReverbAmount] = useState(0.35);
   const [echoAmount, setEchoAmount] = useState(0.15);
-  const [keyShift, setKeyShift] = useState(0);
+  const [internalKeyShift, setInternalKeyShift] = useState(0);
+
+  const keyShift = externalKeyShift !== undefined ? externalKeyShift : internalKeyShift;
+  const updateKeyShift = (val: number) => {
+    if (onKeyShiftChange) {
+      onKeyShiftChange(val);
+    } else {
+      setInternalKeyShift(val);
+    }
+  };
   const [isRecording, setIsRecording] = useState(false);
   const [recordSeconds, setRecordSeconds] = useState(0);
   const [recordedUrl, setRecordedUrl] = useState<string | null>(null);
@@ -231,11 +244,12 @@ export const VocalStudioDock: React.FC<VocalStudioDockProps> = ({
             </button>
 
             {/* Key Transposer */}
-            <div className="flex items-center bg-black/40 rounded-xl px-2 py-1 border border-white/10 text-xs">
+            <div className="flex items-center bg-black/40 rounded-xl px-2 py-1 border border-white/10 text-xs" title="Key Transposition (-6 to +6 Semitones)">
               <span className="text-slate-400 mr-1.5 text-[11px]">Key:</span>
               <button
-                onClick={() => setKeyShift(Math.max(-6, keyShift - 1))}
+                onClick={() => updateKeyShift(Math.max(-6, keyShift - 1))}
                 className="w-5 h-5 rounded bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center transition-all"
+                title="Lower key by 1 semitone"
               >
                 -
               </button>
@@ -243,8 +257,9 @@ export const VocalStudioDock: React.FC<VocalStudioDockProps> = ({
                 {keyShift > 0 ? `+${keyShift}` : keyShift}
               </span>
               <button
-                onClick={() => setKeyShift(Math.min(6, keyShift + 1))}
+                onClick={() => updateKeyShift(Math.min(6, keyShift + 1))}
                 className="w-5 h-5 rounded bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center transition-all"
+                title="Raise key by 1 semitone"
               >
                 +
               </button>

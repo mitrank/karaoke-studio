@@ -359,6 +359,14 @@ export class VocalStudioEngine {
   public getIsMicRunning(): boolean {
     return this.isMicRunning;
   }
+
+  public getAudioContext(): AudioContext {
+    return this.ensureAudioContext();
+  }
+
+  public getRecordingDestination(): MediaStreamAudioDestinationNode | null {
+    return this.recordingDestination;
+  }
 }
 
 // Global Singleton for the browser session
