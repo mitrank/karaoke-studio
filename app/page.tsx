@@ -301,22 +301,22 @@ export default function KaraokeApp() {
       )}
 
       {/* Top Application Header */}
-      <header className="relative z-20 flex items-center justify-between px-4 sm:px-8 py-3.5 border-b border-white/5 bg-[#090b10]/90 backdrop-blur-xl flex-wrap gap-3">
+      <header className="relative z-20 flex items-center justify-between px-3 sm:px-8 py-2.5 sm:py-3.5 border-b border-white/5 bg-[#090b10]/90 backdrop-blur-xl flex-wrap gap-2 sm:gap-3">
         
         {/* Brand & Main View Navigation */}
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-3 sm:gap-5">
           <div
             onClick={() => setCurrentView('browse')}
-            className="flex items-center gap-3 cursor-pointer group"
+            className="flex items-center gap-2 sm:gap-3 cursor-pointer group"
           >
-            <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-600/30 group-hover:scale-105 transition-all">
-              <Mic2 className="w-5 h-5" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-600/30 group-hover:scale-105 transition-all">
+              <Mic2 className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
-              <span className="text-base font-extrabold tracking-tight text-white block">
+              <span className="text-sm sm:text-base font-extrabold tracking-tight text-white block">
                 Karaoke<span className="text-indigo-400">Studio</span>
               </span>
-              <span className="text-[11px] text-slate-400 font-medium block">
+              <span className="text-[10px] sm:text-[11px] text-slate-400 font-medium hidden sm:block">
                 Live Vocal Platform
               </span>
             </div>
@@ -360,25 +360,25 @@ export default function KaraokeApp() {
           <div className="flex items-center bg-white/5 p-1 rounded-xl border border-white/10 text-xs shadow-inner">
             <button
               onClick={() => handleToggleTrackMode('karaoke')}
-              className={`px-3.5 py-1.5 rounded-lg font-semibold flex items-center gap-2 transition-all ${
+              className={`px-2.5 sm:px-3.5 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 sm:gap-2 transition-all ${
                 trackMode === 'karaoke'
                   ? 'bg-indigo-600 text-white shadow-md'
                   : 'text-slate-400 hover:text-white'
               }`}
               title="Seamlessly switch to pure Karaoke backing track"
             >
-              <span>🎤 Karaoke Track</span>
+              <span>🎤 Karaoke<span className="hidden sm:inline"> Track</span></span>
             </button>
             <button
               onClick={() => handleToggleTrackMode('original')}
-              className={`px-3.5 py-1.5 rounded-lg font-semibold flex items-center gap-2 transition-all ${
+              className={`px-2.5 sm:px-3.5 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 sm:gap-2 transition-all ${
                 trackMode === 'original'
                   ? 'bg-emerald-600 text-white shadow-md'
                   : 'text-slate-400 hover:text-white'
               }`}
               title="Seamlessly switch to Original Artist studio master"
             >
-              <span>🎧 Original Track</span>
+              <span>🎧 Original<span className="hidden sm:inline"> Track</span></span>
             </button>
           </div>
         )}

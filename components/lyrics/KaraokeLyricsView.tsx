@@ -106,30 +106,30 @@ export const KaraokeLyricsView: React.FC<KaraokeLyricsViewProps> = ({
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[550px] h-[300px] bg-indigo-600/15 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Stage Utility Header: Calibration & Language */}
-      <div className="w-full max-w-3xl flex items-center justify-between px-4 py-2 z-20 flex-wrap gap-2 text-xs mb-2">
+      <div className="w-full max-w-3xl flex items-center justify-center sm:justify-between px-2 sm:px-4 py-1.5 sm:py-2 z-20 flex-wrap gap-2 text-xs mb-2">
         
         {/* Sync Calibration Controls */}
-        <div className="flex items-center gap-1.5 bg-slate-900/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/10 text-xs shadow-lg">
+        <div className="flex items-center gap-1 sm:gap-1.5 bg-slate-900/90 backdrop-blur-md px-2.5 sm:px-3.5 py-1.5 rounded-full border border-white/10 text-xs shadow-lg">
           <span className="text-slate-400 font-medium hidden sm:inline mr-1 text-[11px] uppercase tracking-wider">
             Sync Timing:
           </span>
           <button
             onClick={() => onAdjustSyncOffset(-500)}
-            className="px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white transition-all text-[11px] font-semibold"
+            className="px-1.5 sm:px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white transition-all text-[10px] sm:text-[11px] font-semibold"
             title="Advance lyrics 0.5s earlier"
           >
             -0.5s
           </button>
           <button
             onClick={() => onAdjustSyncOffset(-100)}
-            className="px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white transition-all text-[11px] font-semibold"
+            className="px-1.5 sm:px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white transition-all text-[10px] sm:text-[11px] font-semibold"
             title="Advance lyrics 0.1s earlier"
           >
             -0.1s
           </button>
           
           <span
-            className={`px-2.5 py-0.5 rounded font-mono font-bold text-center min-w-[55px] text-xs ${
+            className={`px-2 py-0.5 rounded font-mono font-bold text-center min-w-[48px] sm:min-w-[55px] text-[11px] sm:text-xs ${
               syncOffsetMs !== 0 ? 'text-amber-300 bg-amber-500/15' : 'text-white'
             }`}
           >
@@ -138,14 +138,14 @@ export const KaraokeLyricsView: React.FC<KaraokeLyricsViewProps> = ({
 
           <button
             onClick={() => onAdjustSyncOffset(100)}
-            className="px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white transition-all text-[11px] font-semibold"
+            className="px-1.5 sm:px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white transition-all text-[10px] sm:text-[11px] font-semibold"
             title="Delay lyrics 0.1s later"
           >
             +0.1s
           </button>
           <button
             onClick={() => onAdjustSyncOffset(500)}
-            className="px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white transition-all text-[11px] font-semibold"
+            className="px-1.5 sm:px-2 py-0.5 rounded bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white transition-all text-[10px] sm:text-[11px] font-semibold"
             title="Delay lyrics 0.5s later"
           >
             +0.5s
@@ -154,7 +154,7 @@ export const KaraokeLyricsView: React.FC<KaraokeLyricsViewProps> = ({
           {syncOffsetMs !== 0 && (
             <button
               onClick={onResetSyncOffset}
-              className="p-1 rounded hover:bg-white/10 text-slate-400 hover:text-white transition-all ml-1"
+              className="p-1 rounded hover:bg-white/10 text-slate-400 hover:text-white transition-all ml-0.5 sm:ml-1"
               title="Reset offset to 0"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -166,7 +166,7 @@ export const KaraokeLyricsView: React.FC<KaraokeLyricsViewProps> = ({
         {hasIndic && (
           <button
             onClick={onToggleTransliteration}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md border transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-md border transition-all ${
               showTransliteration
                 ? 'bg-indigo-600/30 border-indigo-400/50 text-indigo-200 shadow-sm'
                 : 'bg-slate-900/90 border-white/10 text-slate-400 hover:text-white'
@@ -182,16 +182,16 @@ export const KaraokeLyricsView: React.FC<KaraokeLyricsViewProps> = ({
 
       {/* Instrumental Intro Alert Banner */}
       {isIntro && (
-        <div className="mb-3 px-4 py-2 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-semibold flex items-center gap-2 animate-pulse shadow-lg">
-          <Sparkles className="w-4 h-4 text-indigo-400" />
-          <span>Instrumental Intro — Vocals begin in {introRemainingSec}s</span>
+        <div className="mb-3 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-semibold flex items-center gap-2 animate-pulse shadow-lg text-center">
+          <Sparkles className="w-4 h-4 text-indigo-400 shrink-0" />
+          <span>Instrumental Intro — Vocals in {introRemainingSec}s</span>
         </div>
       )}
 
       {/* Fluid Lyrics Viewport with Explicit Scrollable Height */}
       <div
         ref={containerRef}
-        className={`w-full h-[52vh] sm:h-[55vh] md:h-[58vh] max-h-[580px] overflow-y-auto px-4 py-12 space-y-7 scroll-smooth select-none hide-scrollbar text-center ${
+        className={`w-full h-[52vh] sm:h-[55vh] md:h-[58vh] max-h-[580px] overflow-y-auto px-2 sm:px-4 py-8 sm:py-12 space-y-5 sm:space-y-7 scroll-smooth select-none hide-scrollbar text-center ${
           isStageFullscreen ? 'max-w-5xl' : 'max-w-3xl'
         }`}
       >
@@ -252,12 +252,12 @@ export const KaraokeLyricsView: React.FC<KaraokeLyricsViewProps> = ({
               <div
                 className={`relative inline-block font-extrabold tracking-tight leading-relaxed ${
                   isStageFullscreen
-                    ? 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl'
+                    ? 'text-2xl sm:text-4xl md:text-5xl lg:text-6xl'
                     : isActive
-                    ? 'text-2xl sm:text-3xl md:text-4xl'
+                    ? 'text-xl sm:text-3xl md:text-4xl'
                     : isNext
-                    ? 'text-xl sm:text-2xl md:text-3xl'
-                    : 'text-lg sm:text-xl md:text-2xl'
+                    ? 'text-base sm:text-2xl md:text-3xl'
+                    : 'text-sm sm:text-xl md:text-2xl'
                 }`}
               >
                 {/* Background base text */}

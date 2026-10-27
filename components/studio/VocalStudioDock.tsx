@@ -157,24 +157,25 @@ export const VocalStudioDock: React.FC<VocalStudioDockProps> = ({
   const activeSegments = Math.round(vuLevel * totalSegments);
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-30 flex flex-col items-center px-4 pb-3 pointer-events-none">
-      <div className="pointer-events-auto w-full max-w-4xl bg-slate-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl p-3 text-white transition-all duration-300">
+    <div className="fixed bottom-0 left-0 right-0 z-30 flex flex-col items-center px-2 pb-2 sm:px-4 sm:pb-3 pointer-events-none">
+      <div className="pointer-events-auto w-full max-w-4xl bg-slate-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl p-2.5 sm:p-3 text-white transition-all duration-300">
         
         {/* Main Audio Controls Strip */}
-        <div className="flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
+        <div className="flex items-center justify-between gap-1.5 sm:gap-3 flex-wrap sm:flex-nowrap">
           
           {/* Section 1: Microphone Switch & VU Meter */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               onClick={handleToggleMic}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all border ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl text-xs font-semibold transition-all border ${
                 isMicOn
                   ? 'bg-emerald-600 text-white border-emerald-500 shadow-md shadow-emerald-600/30'
                   : 'bg-white/5 border-white/10 text-slate-300 hover:text-white hover:bg-white/10'
               }`}
             >
               {isMicOn ? <Mic className="w-4 h-4" /> : <MicOff className="w-4 h-4 text-slate-400" />}
-              <span>{isMicOn ? 'Microphone Active' : 'Enable Mic'}</span>
+              <span className="hidden sm:inline">{isMicOn ? 'Microphone Active' : 'Enable Mic'}</span>
+              <span className="sm:hidden">{isMicOn ? 'Mic On' : 'Mic'}</span>
             </button>
 
             {/* Visual VU Meter */}
@@ -202,11 +203,11 @@ export const VocalStudioDock: React.FC<VocalStudioDockProps> = ({
           </div>
 
           {/* Section 2: Studio Audio FX (Vocal Remover & Pitch Tuner) */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {/* Center Channel Vocal Suppressor */}
             <button
               onClick={() => onToggleVocalRemover(!isVocalRemoverActive)}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium border transition-all ${
+              className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs font-medium border transition-all ${
                 isVocalRemoverActive
                   ? 'bg-indigo-600 border-indigo-500 text-white shadow-md'
                   : 'bg-white/5 border-white/10 text-slate-300 hover:text-white hover:bg-white/10'
@@ -214,13 +215,13 @@ export const VocalStudioDock: React.FC<VocalStudioDockProps> = ({
               title="Isolates backing music by suppressing centered vocal tracks"
             >
               <Layers className="w-3.5 h-3.5" />
-              <span>Vocal Suppressor {isVocalRemoverActive ? '(ON)' : ''}</span>
+              <span><span className="hidden sm:inline">Vocal </span>Suppressor{isVocalRemoverActive ? ' (ON)' : ''}</span>
             </button>
 
             {/* Pitch Tuner */}
             <button
               onClick={() => onTogglePitchMonitor(!pitchMonitorActive)}
-              className={`hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium border transition-all ${
+              className={`hidden md:flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium border transition-all ${
                 pitchMonitorActive
                   ? 'bg-amber-500 border-amber-400 text-slate-950 font-bold shadow-md'
                   : 'bg-white/5 border-white/10 text-slate-300 hover:text-white hover:bg-white/10'
@@ -232,11 +233,11 @@ export const VocalStudioDock: React.FC<VocalStudioDockProps> = ({
           </div>
 
           {/* Section 3: Hardware Routing, Key Transpose, and Take Recorder */}
-          <div className="flex items-center gap-2 ml-auto">
+          <div className="flex items-center gap-1.5 sm:gap-2 ml-auto">
             {/* Audio Devices Modal Launcher */}
             <button
               onClick={onOpenAudioDevices}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-all"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs font-medium bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-all"
               title="Configure Headphones & Microphone Output"
             >
               <Headphones className="w-3.5 h-3.5 text-indigo-400" />
@@ -244,8 +245,8 @@ export const VocalStudioDock: React.FC<VocalStudioDockProps> = ({
             </button>
 
             {/* Key Transposer */}
-            <div className="flex items-center bg-black/40 rounded-xl px-2 py-1 border border-white/10 text-xs" title="Key Transposition (-6 to +6 Semitones)">
-              <span className="text-slate-400 mr-1.5 text-[11px]">Key:</span>
+            <div className="flex items-center bg-black/40 rounded-xl px-1.5 sm:px-2 py-1 border border-white/10 text-xs" title="Key Transposition (-6 to +6 Semitones)">
+              <span className="text-slate-400 mr-1 sm:mr-1.5 text-[10px] sm:text-[11px]">Key:</span>
               <button
                 onClick={() => updateKeyShift(Math.max(-6, keyShift - 1))}
                 className="w-5 h-5 rounded bg-white/10 hover:bg-white/20 text-white font-bold flex items-center justify-center transition-all"
@@ -253,7 +254,7 @@ export const VocalStudioDock: React.FC<VocalStudioDockProps> = ({
               >
                 -
               </button>
-              <span className="w-7 text-center font-bold text-white text-xs">
+              <span className="w-6 sm:w-7 text-center font-bold text-white text-xs">
                 {keyShift > 0 ? `+${keyShift}` : keyShift}
               </span>
               <button
@@ -268,14 +269,15 @@ export const VocalStudioDock: React.FC<VocalStudioDockProps> = ({
             {/* Performance Recorder */}
             <button
               onClick={handleToggleRecord}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all border ${
+              className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs font-bold transition-all border ${
                 isRecording
                   ? 'bg-rose-600 text-white border-rose-500 shadow-md animate-pulse'
                   : 'bg-white/5 hover:bg-white/10 text-slate-300 border-white/10'
               }`}
             >
-              {isRecording ? <Square className="w-3.5 h-3.5 fill-current" /> : <Disc className="w-3.5 h-3.5 text-rose-400" />}
-              <span>{isRecording ? formatTime(recordSeconds) : 'Record'}</span>
+              {isRecording ? <Square className="w-3.5 h-3.5 fill-current" /> : <Disc className="w-3.5 h-3.5" />}
+              <span className="hidden sm:inline">{isRecording ? `Recording (${formatTime(recordSeconds)})` : 'Record Take'}</span>
+              <span className="sm:hidden">{isRecording ? formatTime(recordSeconds) : 'Rec'}</span>
             </button>
 
             {/* Download Take */}
